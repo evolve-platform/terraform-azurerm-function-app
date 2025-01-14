@@ -73,7 +73,6 @@
 # }
 
 
-
 resource "azurerm_service_plan" "this" {
   name                = var.name
   resource_group_name = var.resource_group_name
@@ -82,14 +81,6 @@ resource "azurerm_service_plan" "this" {
   sku_name            = "Y1"
   tags                = var.tags
 }
-
-locals {
-  environment_variables = {
-    WEBSITE_RUN_FROM_PACKAGE = var.package_url
-  }
-}
-
-
 
 resource "azurerm_application_insights" "primary" {
   name                = var.name
@@ -105,21 +96,6 @@ resource "azurerm_application_insights_api_key" "write" {
   application_insights_id = azurerm_application_insights.primary.id
   write_permissions       = ["annotations"]
 }
-
-
-
-data "azurerm_storage_account" "artifacts" {
-  name                = var.storage_account_name
-  resource_group_name = var.storage_account_resource_group
-}
-
-# Allow the function app to access the storage account
-resource "azurerm_role_assignment" "contributor" {
-  scope                = data.azurerm_storage_account.artifacts.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = azurerm_linux_function_app.this.identity[0].principal_id
-}
-
 
 resource "azurerm_linux_function_app" "this" {
   name                = var.name

@@ -24,6 +24,7 @@ No modules.
 | [azurerm_application_insights_api_key.write](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights_api_key) | resource |
 | [azurerm_linux_function_app.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_function_app) | resource |
 | [azurerm_role_assignment.contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_service_plan.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan) | resource |
 | [azurerm_storage_account.artifacts](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 
@@ -39,6 +40,7 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | The name of the function app | `any` | n/a | yes |
 | <a name="input_package_url"></a> [package\_url](#input\_package\_url) | The package to be deployed to the function app | `any` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | The name of the resource group in which the resources will be created | `any` | n/a | yes |
+| <a name="input_role_assignments"></a> [role\_assignments](#input\_role\_assignments) | Role assignments to be applied to the function app | <pre>list(object({<br/>    role  = string<br/>    scope = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_runtime"></a> [runtime](#input\_runtime) | The runtime for your app. One of the following: 'dotnet-isolated', 'python', 'java', 'node', 'powershell' | `string` | `"node"` | no |
 | <a name="input_runtime_version"></a> [runtime\_version](#input\_runtime\_version) | The runtime and version for your app. One of the following: '3.10', '3.11', '7.4', '8.0', '10', '11', '17', '20' | `string` | `"20"` | no |
 | <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | The name of the storage account to be used by the function app | `any` | n/a | yes |
@@ -49,6 +51,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_default_hostname"></a> [default\_hostname](#output\_default\_hostname) | n/a |
-| <a name="output_id"></a> [id](#output\_id) | n/a |
+| <a name="output_default_hostname"></a> [default\_hostname](#output\_default\_hostname) | The default hostname of the function app |
+| <a name="output_id"></a> [id](#output\_id) | The ID of the function app |
 <!-- END_TF_DOCS -->

@@ -59,3 +59,12 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "role_assignments" {
+  description = "Role assignments to be applied to the function app"
+  type = list(object({
+    role  = string
+    scope = string
+  }))
+  default = []
+}
