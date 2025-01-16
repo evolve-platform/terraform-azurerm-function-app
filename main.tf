@@ -115,7 +115,6 @@ resource "azurerm_linux_function_app" "this" {
     },
   var.environment)
 
-
   site_config {
     application_stack {
       node_version = 20
@@ -131,7 +130,22 @@ resource "azurerm_linux_function_app" "this" {
     }
   }
 
-  identity {
-    type = "SystemAssigned"
+  dynamic "identity" {
+    for_each = length(var.identity_ids) > 0 ? [1] : []
+
+    content {
+      type         = "SystemAssigned, UserAssigned"
+      identity_ids = var.identity_ids
+    }
+  }
+
+  key_vault_reference_identity_id = var.key_vault_reference_identity_id
+
+  dynamic "identity" {
+    for_each = length(var.identity_ids) == 0 ? [1] : []
+
+    content {
+      type = "SystemAssigned"
+    }
   }
 }

@@ -35,6 +35,8 @@ No modules.
 | <a name="input_app_scale_limit"></a> [app\_scale\_limit](#input\_app\_scale\_limit) | The maximum number of instances that the function app can scale to (40-1000) | `number` | `100` | no |
 | <a name="input_azure_log_workspace_id"></a> [azure\_log\_workspace\_id](#input\_azure\_log\_workspace\_id) | The ID of the Azure Log Analytics workspace to be used by the application insights instance | `any` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment variables to be set on the function app | `map(string)` | `{}` | no |
+| <a name="input_identity_ids"></a> [identity\_ids](#input\_identity\_ids) | The IDs of the managed identities to be assigned to the function app | `list(string)` | `[]` | no |
+| <a name="input_key_vault_reference_identity_id"></a> [key\_vault\_reference\_identity\_id](#input\_key\_vault\_reference\_identity\_id) | The ID of the managed identity to be used to access the key vault | `string` | `"SystemAssigned"` | no |
 | <a name="input_location"></a> [location](#input\_location) | The location in which the resources will be created | `any` | n/a | yes |
 | <a name="input_memory"></a> [memory](#input\_memory) | The instance memory for the instances of the app: 2048 or 4096 | `number` | `2048` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name of the function app | `any` | n/a | yes |
