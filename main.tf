@@ -1,5 +1,3 @@
-
-
 # resource "azapi_resource" "server_plan" {
 #   type                      = "Microsoft.Web/serverfarms@2023-12-01"
 #   schema_validation_enabled = false
@@ -72,8 +70,13 @@
 #   depends_on = [azapi_resource.server_plan]
 # }
 
+moved {
+  from = azurerm_service_plan.this
+  to   = azurerm_service_plan.this[0]
+}
 
 resource "azurerm_service_plan" "this" {
+  count               = var.service_plan_id == null ? 1 : 0
   name                = var.name
   resource_group_name = var.resource_group_name
   location            = var.location
@@ -103,7 +106,7 @@ resource "azurerm_linux_function_app" "this" {
   location            = var.location
   tags                = var.tags
 
-  service_plan_id               = azurerm_service_plan.this.id
+  service_plan_id               = var.service_plan_id != null ? var.service_plan_id : azurerm_service_plan.this[0].id
   storage_account_name          = var.storage_account_name
   storage_uses_managed_identity = true
 

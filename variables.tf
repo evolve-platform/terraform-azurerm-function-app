@@ -80,3 +80,9 @@ variable "key_vault_reference_identity_id" {
   type        = string
   default     = "SystemAssigned"
 }
+
+variable "service_plan_id" {
+  description = "The ID of the service plan to be used by the function app"
+  type        = string
+  default     = null
+}
