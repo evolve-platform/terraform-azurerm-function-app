@@ -97,7 +97,7 @@ resource "azurerm_application_insights" "primary" {
 resource "azurerm_application_insights_api_key" "write" {
   name                    = "${var.name}-insights-key"
   application_insights_id = azurerm_application_insights.primary.id
-  write_permissions = ["annotations"]
+  write_permissions       = ["annotations"]
 }
 
 resource "azurerm_linux_function_app" "this" {
@@ -115,8 +115,8 @@ resource "azurerm_linux_function_app" "this" {
   app_settings = merge({
     WEBSITE_RUN_FROM_PACKAGE       = var.package_url
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.primary.instrumentation_key
-  },
-    var.environment)
+    },
+  var.environment)
 
   site_config {
     application_stack {
