@@ -46,8 +46,8 @@ variable "package_url" {
 
 variable "environment" {
   description = "Environment variables to be set on the function app"
-  type        = map(string)
-  default     = {}
+  type = map(string)
+  default = {}
 }
 
 variable "azure_log_workspace_id" {
@@ -56,8 +56,8 @@ variable "azure_log_workspace_id" {
 
 variable "tags" {
   description = "Tags to be applied to all resources"
-  type        = map(string)
-  default     = {}
+  type = map(string)
+  default = {}
 }
 
 variable "role_assignments" {
@@ -71,12 +71,18 @@ variable "role_assignments" {
 
 variable "identity_ids" {
   description = "The IDs of the managed identities to be assigned to the function app"
-  type        = list(string)
-  default     = []
+  type = list(string)
+  default = []
 }
 
 variable "key_vault_reference_identity_id" {
   description = "The ID of the managed identity to be used to access the key vault"
   type        = string
   default     = "SystemAssigned"
+}
+
+variable "service_plan_id" {
+  description = "The ID of the service plan to be used by the function app"
+  type = string
+  default = null
 }
