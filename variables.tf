@@ -78,7 +78,7 @@ variable "identity_ids" {
 variable "key_vault_reference_identity_id" {
   description = "The ID of the managed identity to be used to access the key vault"
   type        = string
-  default     = "SystemAssigned"
+  default     = null
 }
 
 variable "service_plan_id" {

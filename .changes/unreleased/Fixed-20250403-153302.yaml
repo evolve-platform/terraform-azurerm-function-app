@@ -1,0 +1,3 @@
+kind: Fixed
+body: Set ``key_vault_reference_identity_id`` to null by default
+time: 2025-04-03T15:33:02.967065+02:00
