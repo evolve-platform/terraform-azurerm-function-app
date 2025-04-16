@@ -1,75 +1,3 @@
-# resource "azapi_resource" "server_plan" {
-#   type                      = "Microsoft.Web/serverfarms@2023-12-01"
-#   schema_validation_enabled = false
-#   location                  = var.location
-#   name                      = var.name
-#   parent_id                 = data.azurerm_resource_group.selected.id
-#   body = jsonencode({
-#     kind = "functionapp",
-#     sku = {
-#       tier = "FlexConsumption",
-#       name = "FC1"
-#     },
-#     properties = {
-#       reserved = true
-#     }
-#   })
-# }
-
-
-# resource "azapi_resource" "function_app" {
-#   type                      = "Microsoft.Web/sites@2023-12-01"
-#   schema_validation_enabled = false
-#   name                      = var.name
-#   location                  = var.location
-#   parent_id                 = data.azurerm_resource_group.selected.id
-#   body = jsonencode({
-#     kind = "functionapp,linux",
-#     identity = {
-#       type : "SystemAssigned"
-#     }
-#     properties = {
-#       serverFarmId = azapi_resource.server_plan.id,
-#       functionAppConfig = {
-#         deployment = {
-#           storage = {
-#             type  = "blobContainer",
-#             value = var.storage_container
-#             authentication = {
-#               type = "SystemAssignedIdentity"
-#             }
-#           }
-#         },
-#         scaleAndConcurrency = {
-#           maximumInstanceCount = var.app_scale_limit
-#           instanceMemoryMB     = var.memory
-#         },
-#         runtime = {
-#           name    = var.runtime
-#           version = var.runtime_version
-#         }
-#       },
-#       siteConfig = {
-#         appSettings = [
-#           {
-#             name  = "AzureWebJobsStorage__accountName",
-#             value = var.storage_account_name
-#           },
-#           {
-#             name  = "APPLICATIONINSIGHTS_CONNECTION_STRING",
-#             value = var.application_insights_connection_string
-#           },
-#           {
-#             name  = "WEBSITE_RUN_FROM_ZIP",
-#             value = var.package_url
-#           }
-#         ]
-#       }
-#     }
-#   })
-#   depends_on = [azapi_resource.server_plan]
-# }
-
 moved {
   from = azurerm_service_plan.this
   to   = azurerm_service_plan.this[0]
@@ -123,7 +51,8 @@ resource "azurerm_linux_function_app" "this" {
       node_version = 20
     }
     always_on = false
-    # api_management_api_id = azurerm_api_management_api.main.id
+
+    app_scale_limit = var.app_scale_limit
 
     application_insights_connection_string = azurerm_application_insights.primary.connection_string
     application_insights_key               = azurerm_application_insights_api_key.write.api_key
