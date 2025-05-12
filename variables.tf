@@ -38,6 +38,10 @@ variable "storage_account_name" {
   description = "The name of the storage account to be used by the function app"
 }
 
+variable "storage_container_name" {
+  description = "The name of the storage container to be used by the function app"
+  default     = "functions"
+}
 
 variable "package_url" {
   description = "The package to be deployed to the function app"

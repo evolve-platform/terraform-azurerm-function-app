@@ -9,7 +9,7 @@ resource "azurerm_service_plan" "this" {
   resource_group_name = var.resource_group_name
   location            = var.location
   os_type             = "Linux"
-  sku_name            = "Y1"
+  sku_name            = "FC1"
   tags                = var.tags
 }
 
@@ -28,32 +28,34 @@ resource "azurerm_application_insights_api_key" "write" {
   write_permissions       = ["annotations"]
 }
 
-resource "azurerm_linux_function_app" "this" {
+resource "azurerm_function_app_flex_consumption" "this" {
   name                = var.name
   resource_group_name = var.resource_group_name
   location            = var.location
   tags                = var.tags
 
-  service_plan_id               = var.service_plan_id != null ? var.service_plan_id : azurerm_service_plan.this[0].id
-  storage_account_name          = var.storage_account_name
-  storage_uses_managed_identity = true
+  service_plan_id = var.service_plan_id != null ? var.service_plan_id : azurerm_service_plan.this[0].id
 
-  https_only = true
+  storage_container_type     = "blobContainer"
+  storage_container_endpoint = "${data.azurerm_storage_account.artifacts.primary_blob_endpoint}${data.azurerm_storage_container.functions.name}"
+  # storage_authentication_type       = length(var.identity_ids) > 0 ? "UserAssignedIdentity" : "StorageAccountConnectionString"
+  # storage_access_key                = length(var.identity_ids) > 0 ? null : data.azurerm_storage_account.artifacts.primary_access_key
+  # storage_user_assigned_identity_id = length(var.identity_ids) > 0 ? var.identity_ids[0] : null
+
+  storage_authentication_type = "StorageAccountConnectionString"
+  storage_access_key          = data.azurerm_storage_account.artifacts.primary_access_key
+
+  runtime_name           = var.runtime
+  runtime_version        = var.runtime_version
+  maximum_instance_count = var.app_scale_limit
+  instance_memory_in_mb  = var.memory
 
   app_settings = merge({
-    WEBSITE_RUN_FROM_PACKAGE       = var.package_url
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.primary.instrumentation_key
     },
+
   var.environment)
-
   site_config {
-    application_stack {
-      node_version = 20
-    }
-    always_on = false
-
-    app_scale_limit = var.app_scale_limit
-
     application_insights_connection_string = azurerm_application_insights.primary.connection_string
     application_insights_key               = azurerm_application_insights_api_key.write.api_key
 
@@ -71,8 +73,6 @@ resource "azurerm_linux_function_app" "this" {
     }
   }
 
-  key_vault_reference_identity_id = var.key_vault_reference_identity_id
-
   dynamic "identity" {
     for_each = length(var.identity_ids) == 0 ? [1] : []
 
@@ -80,4 +80,5 @@ resource "azurerm_linux_function_app" "this" {
       type = "SystemAssigned"
     }
   }
+
 }
