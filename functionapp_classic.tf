@@ -13,11 +13,7 @@ resource "azurerm_linux_function_app" "this" {
 
   https_only = true
 
-  app_settings = merge({
-    WEBSITE_RUN_FROM_PACKAGE       = var.package_url
-    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.primary.instrumentation_key
-    },
-  var.environment)
+  app_settings = merge(local.default_app_settings, var.environment)
 
   site_config {
     application_stack {

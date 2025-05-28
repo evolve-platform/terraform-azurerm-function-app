@@ -28,11 +28,8 @@ resource "azurerm_function_app_flex_consumption" "this" {
   maximum_instance_count = var.app_scale_limit
   instance_memory_in_mb  = var.memory
 
-  app_settings = merge({
-    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.primary.instrumentation_key
-    },
+  app_settings = merge(local.default_app_settings, var.environment)
 
-  var.environment)
   site_config {
     application_insights_connection_string = azurerm_application_insights.primary.connection_string
     application_insights_key               = azurerm_application_insights_api_key.write.api_key
