@@ -118,3 +118,9 @@ variable "service_plan_sku_name" {
   type        = string
   default     = "Y1"
 }
+
+variable "virtual_network_subnet_id" {
+  description = "The ID of the subnet to integrate the flex function app with"
+  type        = string
+  default     = null
+}

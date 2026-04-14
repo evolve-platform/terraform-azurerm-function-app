@@ -23,10 +23,11 @@ resource "azurerm_function_app_flex_consumption" "this" {
   storage_authentication_type = "StorageAccountConnectionString"
   storage_access_key          = data.azurerm_storage_account.artifacts.primary_access_key
 
-  runtime_name           = var.runtime
-  runtime_version        = var.runtime_version
-  maximum_instance_count = var.app_scale_limit
-  instance_memory_in_mb  = var.memory
+  runtime_name              = var.runtime
+  runtime_version           = var.runtime_version
+  maximum_instance_count    = var.app_scale_limit
+  instance_memory_in_mb     = var.memory
+  virtual_network_subnet_id = var.virtual_network_subnet_id
 
   app_settings = merge({
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.primary.instrumentation_key
