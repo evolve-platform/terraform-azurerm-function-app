@@ -1,0 +1,3 @@
+kind: Added
+body: Allow optionally setting `virtual_network_subnet_id` for flex function apps.
+time: 2026-04-14T11:46:31.50149+02:00
